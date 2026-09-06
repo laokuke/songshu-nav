@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>山水之间-嵩鼠导航站</title>
+<link rel="preconnect" href="https://miaoda.feishu.cn">
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;500;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap">
+<style>
+  :root{
+    --bg:#ececec;
+    --card:#ffffff;
+    --ink:#1a1a1a;
+    --ink-2:#555;
+    --ink-3:#999;
+    --line:#e3e3e3;
+    --accent:#333;
+    --shadow:0 1px 3px rgba(0,0,0,.04);
+    --shadow-hover:0 4px 12px rgba(0,0,0,.07);
+    --serif:"Noto Serif SC",serif;
+    --sans:"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:var(--sans);color:var(--ink);background:var(--bg);
+    line-height:1.6;-webkit-font-smoothing:antialiased;
+    font-size:14px;
+  }
+  a{text-decoration:none;color:inherit}
+  ::selection{background:rgba(0,0,0,.12)}
+
+  /* ===== 容器 ===== */
+  .wrap{
+    max-width:1100px;margin:0 auto;
+    padding:60px 24px 80px;
+  }
+
+  /* ===== 顶部标题区 ===== */
+  .page-title{
+    font-size:48px;font-weight:900;letter-spacing:-1px;
+    color:var(--ink);line-height:1.1;
+    font-family:var(--serif);
+  }
+  .page-subtitle{
+    margin-top:10px;font-size:16px;color:#CE0000;
+    font-weight:400;
+  }
+
+  /* ===== 工具栏 ===== */
+  .toolbar{
+    display:flex;align-items:center;gap:8px;
+    margin-top:28px;flex-wrap:wrap;
+  }
+  .tool-btn{
+    width:auto;padding:0 14px;height:36px;border-radius:8px;
+    background:#fff;border:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center;gap:8px;
+    cursor:pointer;transition:.15s;
+    color:var(--ink);
+  }
+  .tool-btn:hover{background:#f5f5f5;border-color:#ddd}
+  .tool-btn svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.8;flex-shrink:0}
+  .tool-btn .label-text{
+    font-size:13px;
+    font-weight:500;
+    white-space:nowrap;
+    font-family:var(--sans);
+  }
+  .tool-btn.search-btn{
+    background:var(--ink);color:#fff;border-color:var(--ink);
+  }
+  .tool-btn.search-btn:hover{background:#333}
+  .tool-sep{width:1px;height:20px;background:var(--line);margin:0 4px}
+
+  /* 搜索框（工具栏展开） */
+  .search-inline{
+    flex:1;min-width:200px;max-width:360px;
+    display:none;align-items:center;
+    background:#fff;border:1px solid var(--line);border-radius:8px;
+    padding:0 12px;
+  }
+  .search-inline.open{display:flex}
+  .search-inline input{
+    flex:1;border:none;outline:none;background:transparent;
+    padding:9px 0;font-size:13.5px;font-family:var(--sans);color:var(--ink);
+  }
+  .search-inline input::placeholder{color:#bbb}
+  .search-inline button{
+    border:none;background:none;cursor:pointer;color:var(--ink-3);
+    padding:4px;display:flex;align-items:center;
+  }
+  .search-inline button svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2}
+
+  /* ===== 分类区块 ===== */
+  .section{margin-top:48px}
+  .cat-title{
+    display:flex;align-items:center;gap:10px;
+    font-size:22px;font-weight:700;color:var(--ink);
+    margin-bottom:18px;
+  }
+  .cat-title svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2}
+
+  /* ===== 卡片网格：4列 ===== */
+  .card-grid{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:16px;
+  }
+  .text-card{
+    background:var(--card);border-radius:12px;
+    padding:18px 20px;
+    border:1px solid var(--line);
+    transition:.18s;cursor:pointer;
+    display:flex;flex-direction:column;gap:6px;
+  }
+  .text-card:hover{
+    box-shadow:var(--shadow-hover);
+    border-color:#d6d6d6;
+    transform:translateY(-1px);
+  }
+  .text-card .t{
+    font-size:15px;font-weight:700;color:var(--ink);
+    line-height:1.35;
+  }
+  .text-card .d{
+    font-size:12.5px;color:var(--ink-3);
+    line-height:1.6;font-weight:300;
+  }
+  .text-card .yr{
+    font-size:11px;color:var(--ink-3);letter-spacing:1px;
+    font-weight:500;
+  }
+  .text-card:hover .t{color:#000}
+
+  /* ===== 横向时间轴 ===== */
+  .timeline{
+    position:relative;
+    padding:70px 0 80px;
+  }
+  /* 中间横线 */
+  .timeline::before{
+    content:"";position:absolute;
+    left:2%;right:2%;top:50%;
+    height:1px;background:var(--line);
+    transform:translateY(-50%);
+  }
+  .tl-row{
+    position:relative;
+    display:grid;grid-template-columns:repeat(9,1fr);
+    align-items:start;
+    margin-left:2%;margin-right:2%;
+  }
+  .tl-row.row-top{
+    margin-bottom:20px;
+  }
+  .tl-row.row-bottom{
+    margin-top:20px;
+  }
+  /* 圆点 */
+  .tl-dots{
+    position:absolute;left:2%;right:2%;top:50%;
+    display:grid;grid-template-columns:repeat(9,1fr);
+    transform:translateY(-50%);
+    pointer-events:none;
+  }
+  .tl-dots span{
+    width:10px;height:10px;border-radius:50%;
+    background:var(--ink);
+    justify-self:center;
+    box-shadow:0 0 0 4px var(--bg);
+  }
+  /* 每个专辑单元 */
+  .tl-item{
+    position:relative;
+    padding:0 6px;
+    display:flex;flex-direction:column;
+    align-items:center;
+  }
+  .tl-item .alb-card{
+    width:100%;
+    text-align:center;
+    transition:.15s;cursor:pointer;
+  }
+  .tl-item .alb-card:hover .nm{color:#000}
+  .tl-item .yr{
+    font-size:11px;color:var(--ink-3);letter-spacing:1px;
+    font-weight:500;
+  }
+  .tl-item .nm{
+    font-family:var(--serif);font-weight:700;
+    font-size:15px;color:var(--ink-2);
+    margin-top:2px;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    width:100%;
+    transition:.15s;
+  }
+  /* 连接线 */
+  .tl-item .connector{
+    width:1px;background:var(--line);
+    flex:none;
+  }
+  .tl-row.row-top .tl-item .connector{
+    height:20px;margin-top:0;
+  }
+  .tl-row.row-bottom .tl-item .connector{
+    height:20px;margin-bottom:0;
+    order:-1;
+  }
+
+  /* ===== 关于 / 底部 ===== */
+  .about-row{
+    margin-top:60px;padding-top:24px;
+    border-top:1px solid var(--line);
+    display:flex;align-items:center;justify-content:space-between;
+    flex-wrap:wrap;gap:12px;
+    font-size:12.5px;color:var(--ink-3);
+  }
+  .about-row b{color:var(--ink-2);font-weight:500}
+  .about-row b a{text-decoration:none;color:inherit;border-bottom:1px solid transparent;transition:.15s}
+  .about-row b a:hover{border-bottom-color:var(--ink-2)}
+
+
+  /* ===== 弹层 ===== */
+  .modal{position:fixed;inset:0;z-index:200;display:none;align-items:center;justify-content:center;padding:20px}
+  .modal.on{display:flex}
+  .modal-mask{position:absolute;inset:0;background:rgba(0,0,0,.35)}
+  .modal-box{
+    position:relative;width:100%;max-width:500px;background:#fff;
+    border-radius:14px;padding:36px 32px;
+    box-shadow:0 24px 60px rgba(0,0,0,.18);
+    animation:pop .24s ease;
+    border:1px solid var(--line);
+  }
+  @keyframes pop{from{transform:translateY(14px);opacity:0}to{transform:none;opacity:1}}
+  .modal-box .yr{
+    color:var(--ink-3);font-family:var(--serif);font-weight:700;
+    font-size:13px;letter-spacing:2px;
+  }
+  .modal-box h3{
+    font-family:var(--serif);font-size:26px;margin:8px 0 14px;color:var(--ink);
+  }
+  .modal-box .desc{
+    color:var(--ink-2);font-weight:300;line-height:1.9;font-size:14.5px;
+  }
+  .modal-close{
+    position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:8px;
+    border:1px solid var(--line);background:#fff;cursor:pointer;color:var(--ink-3);
+    font-size:15px;display:flex;align-items:center;justify-content:center;transition:.15s;
+  }
+  .modal-close:hover{background:#f5f5f5;color:var(--ink)}
+
+  /* ===== 移动端 ===== */
+  @media (max-width:900px){
+    .wrap{padding:40px 20px 60px}
+    .page-title{font-size:36px}
+    .card-grid{grid-template-columns:repeat(2,1fr)}
+    .timeline{padding:40px 0 50px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+    .timeline-inner{position:relative;min-width:900px}
+    .tool-btn .label-text{font-size:12px}
+    .tool-btn{padding:0 10px;gap:6px}
+    .about-row{flex-direction:column;align-items:flex-start}
+  }
+  @media (max-width:500px){
+    .card-grid{grid-template-columns:1fr}
+    .page-title{font-size:30px}
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <!-- ===== 标题区 ===== -->
+  <h1 class="page-title" id="pageTitle">山水有诗</h1>
+  <p class="page-subtitle">许嵩音乐导航 · 嵩鼠入坑指南</p>
+
+  <!-- ===== 工具栏 ===== -->
+  <div class="toolbar">
+    <button class="tool-btn search-btn" id="toolSearch">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+      <span class="label-text">搜索</span>
+    </button>
+    <div class="search-inline" id="searchInline">
+      <input type="text" id="searchInput" placeholder="搜索本站" autocomplete="off">
+      <button id="searchBtn" aria-label="搜索">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+      </button>
+    </div>
+    <div class="tool-sep"></div>
+    <a class="tool-btn" href="#official">
+      <svg viewBox="0 0 24 24"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-4z"/></svg>
+      <span class="label-text">官方入口</span>
+    </a>
+    <a class="tool-btn" href="#analysis">
+      <svg viewBox="0 0 24 24"><path d="M4 4h12l4 4v12H4z"/><path d="M4 10h16"/><path d="M8 14h5"/></svg>
+      <span class="label-text">解析许嵩</span>
+    </a>
+    <a class="tool-btn" href="#relax">
+      <svg viewBox="0 0 24 24"><path d="M3 10h18v2a9 9 0 0 1-9 9 9 9 0 0 1-9-9v-2z"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/><path d="M19 13h2a2 2 0 0 1-2 2"/></svg>
+      <span class="label-text">轻松一下</span>
+    </a>
+    <a class="tool-btn" href="#albums">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>
+      <span class="label-text">专辑时间线</span>
+    </a>
+    <a class="tool-btn" href="#about">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="13"/><circle cx="12" cy="16.5" r="1" fill="currentColor" stroke="none"/></svg>
+      <span class="label-text">关于</span>
+    </a>
+  </div>
+
+  <!-- ===== 官方入口 ===== -->
+  <section class="section" id="official">
+    <h2 class="cat-title">
+      <svg viewBox="0 0 24 24"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-4z"/></svg>
+      官方入口
+    </h2>
+    <div class="card-grid" id="linksGrid"></div>
+  </section>
+
+  <!-- ===== 解析许嵩 ===== -->
+  <section class="section" id="analysis">
+    <h2 class="cat-title">
+      <svg viewBox="0 0 24 24"><path d="M4 4h12l4 4v12H4z"/><path d="M4 10h16"/><path d="M8 14h5"/></svg>
+      解析许嵩
+    </h2>
+    <div class="card-grid" id="analysisGrid"></div>
+  </section>
+
+  <!-- ===== 轻松一下 ===== -->
+  <section class="section" id="relax">
+    <h2 class="cat-title">
+      <svg viewBox="0 0 24 24"><path d="M3 10h18v2a9 9 0 0 1-9 9 9 9 0 0 1-9-9v-2z"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/><path d="M19 13h2a2 2 0 0 1-2 2"/></svg>
+      轻松一下
+    </h2>
+    <div class="card-grid" id="relaxGrid"></div>
+  </section>
+
+  <!-- ===== 专辑时间线 ===== -->
+  <section class="section" id="albums">
+    <h2 class="cat-title">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>
+      专辑时间线
+    </h2>
+    <div class="timeline">
+      <div class="timeline-inner">
+        <div class="tl-row row-top" id="tlTop"></div>
+        <div class="tl-dots" id="tlDots"></div>
+        <div class="tl-row row-bottom" id="tlBottom"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 关于 ===== -->
+  <div class="about-row" id="about">
+    <p>一座持续生长的导航站，由 <b><a href="https://space.bilibili.com/12550061" target="_blank" rel="noopener">@我贼6贼6贼6</a></b> 维护 · 最后更新：2026-09-05 · <span id="busuanzi_container_site_pv">总访问量 <span id="busuanzi_value_site_pv"></span> 次</span> · <span id="busuanzi_container_site_uv">访客数 <span id="busuanzi_value_site_uv"></span> 人次</span></p>
+    <p>山水之间 · 许嵩导航站</p>
+  </div>
+
+</div>
+
+<!-- ===== 专辑弹层 ===== -->
+<div class="modal" id="albumModal">
+  <div class="modal-mask" id="modalMask"></div>
+  <div class="modal-box">
+    <button class="modal-close" id="modalClose" aria-label="关闭">✕</button>
+    <div class="yr" id="mYr"></div>
+    <h3 id="mName"></h3>
+    <div class="desc" id="mDesc"></div>
+  </div>
+</div>
+
+<script>
+/* =========================================================
+   数据
+   ========================================================= */
+
+/* 官方入口 */
+const OFFICIAL_LINKS = [
+  { name:"Vae+ 官方 APP", desc:"许嵩唯一官方粉丝社区", url:"https://apps.apple.com/cn/app/vae-%E8%AE%B8%E5%B5%A9%E5%AE%98%E6%96%B9app/id1139101017" },
+  { name:"QQ音乐主页", desc:"音乐、MV、专辑全收录", url:"https://c.y.qq.com/node/pc/wk_v15/singer_detail.html?singermid=000CK5xN3yZDJt" },
+  { name:"许嵩微博", desc:"许嵩微博账号", url:"https://weibo.com/u/1251000504" },
+  { name:"许嵩抖音", desc:"许嵩抖音账号", url:"https://www.douyin.com/user/MS4wLjABAAAAIxEU7eUDGG68l1ZkKOJz9teQL2eNE4Owc5JZiUfWPAE" },
+  { name:"许嵩小红书", desc:"许嵩小红书账号", url:"https://www.xiaohongshu.com/user/profile/64e38de00000000001004d8f" },
+  { name:"许嵩B站", desc:"许嵩bilibili账号", url:"https://space.bilibili.com/647208864" },
+  { name:"Vae+APP 安卓版", desc:"官方目前未上架安卓版，进入百度网盘下载", url:"https://pan.baidu.com/s/1E5Rc6dG2Fs1UVE_EN1E1Yw?pwd=cj3e" },
+];
+
+/* 解析许嵩 */
+const ANALYSIS_LINKS = [
+  { name:"嵩词百科", desc:"歌词意象 · 歌迷共建知识库", url:"https://4kjfycdzbn4fx.feishuapp.com/app/app_17bkt5mck7c/" },
+  { name:"带你读懂许嵩音乐", desc:"B站 · 歌曲深度解析合集", url:"https://space.bilibili.com/94412444/lists/15233" },
+  { name:"许嵩专辑史", desc:"B站 · 九张专辑创作脉络", url:"https://space.bilibili.com/284868528/lists/2018228?type=season" },
+  { name:"许嵩杂谈", desc:"B站 · 音乐之外的思想碎片", url:"https://space.bilibili.com/284868528/lists/492382?type=season" },
+  { name:"许嵩V+、博客、微博pdf", desc:"许嵩早期及近期文字资料", url:"https://pan.baidu.com/s/1ucA3d6jr6T8Bfk9uK7lcdQ?pwd=4qp4" },
+];
+
+/* 轻松一下 */
+const RELAX_LINKS = [
+  { name:"新海棠诗社", desc:"与黛玉、杜甫等组诗社、写诗、玩诗", url:"https://poetryweaver.qiaoqiao.social/" },
+  { name:"听歌记", desc:"古风AI对话，与嵩鼠向导聊歌解词", url:"https://4kjfycdzbn4fx.aiforce.cloud/app/app_17dfs3xkm5w/" },
+];
+
+const ALBUMS = [
+  { yr:"2009", name:"自定义", desc:"首张词曲全创作专辑，正式开启独立音乐之路。" },
+  { yr:"2010", name:"寻雾启示", desc:"第二张词曲全创作专辑，迷雾深处渐显风格轮廓。" },
+  { yr:"2011", name:"苏格拉没有底", desc:"第三张词曲全创作专辑，开始在旋律里埋下思辨。" },
+  { yr:"2012", name:"梦游计", desc:"第四张词曲全创作专辑，梦境与现实的幽微交错。" },
+  { yr:"2014", name:"不如吃茶去", desc:"第五张词曲全创作专辑，山水茶意，静观世事。" },
+  { yr:"2016", name:"青年晚报", desc:"第六张词曲全创作专辑，市井风物与人间烟火。" },
+  { yr:"2018", name:"寻宝游戏", desc:"第七张词曲全创作专辑，在旧物与时光里寻宝。" },
+  { yr:"2021", name:"呼吸之野", desc:"第八张词曲全创作专辑，呼吸于野，吐纳心声。" },
+  { yr:"2026", name:"安泊猜想", desc:"第九张个人创作专辑，琥珀之喻，九面光泽，循序释出。" },
+];
+
+const LYRICS = [
+  "我想牵着你的手 两个人去宇宙",
+  "宇宙之大 每个生命都在孤寂",
+  "有时相信在某个平行的宇宙",
+  "我瞄了一眼 她好像在看宇宙学科普读物",
+  "沙滩停泊着宇宙飞船",
+  "我乐意把自己奉送 做你独家宇宙",
+  "半生累 尽徒然 碑文完美有谁看",
+  "千年后从你碑前飞过",
+  "一座残碑镇住想念",
+  "转竹林深处 残碑小筑 僧侣始复诵",
+  "流淌过多久才会深刻 碑文才会有声有色",
+  "月也摇晃 人也彷徨",
+  "庐州月光 洒在心上 月下的你不复当年模样",
+  "庐州月光 梨花雨凉",
+  "家乡月光 深深烙在我心上 却流不出当年泪光",
+  "月下门童喟叹",
+  "月华似练 遥看万载沧海成桑田",
+  "当时的明月换拨人看",
+  "新月 湖畔 电影 西餐 那些夜晚",
+  "星光点亮了 海水泛起皱着",
+  "赏花赋月不是我本领",
+  "万家灯火带领星光拼出个晚上",
+  "云遮秋雁 遮住十载月光",
+  "戴月披星 是你在流浪",
+  "你（我）乘月色西飞 哦 夜幕低垂",
+  "谁一颦一笑摇曳了星云",
+  "魁星未拜 禅门苔上屐痕",
+  "皎月归 我轻随 烟火对影赏",
+  "星云沉默江湖里",
+  "灰色孤星 披露窗棂",
+  "月光泼湿忧伤 雨水交响",
+  "哪里会有彩云在追 明月又能无缺几回",
+  "月落时怎么会啼",
+  "什么紫薇星天狼星文曲星北极星",
+  "星星是他看她的眼睛",
+  "在小岛看星星和海盗船",
+  "星空浮现你可爱模样",
+  "月色摇晃树林有风吹动",
+  "华灯遮星碍月",
+  "我剑锋挑起杯里的月光",
+  "踏云回望",
+  "一闪一闪星空亮晶晶",
+  "月影憧憧 烟火几重 烛花儿红",
+  "长安一片月 家乡百十猿",
+  "也是我仅有的风花雪月",
+  "天公爱作美 清风皓月任我飞",
+  "补课的星期天 云遮日的天",
+  "独揽月下萤火 照亮一纸寂寞",
+  "天边出现了好看云霞",
+  "月光顽固地洒落床头的一角",
+  "乘楚台风 忆庾楼月 往事潋滟",
+  "执手闲看流云变幻",
+  "我再也看不到篝火之上的晚星",
+  "像此刻天上飘浮烟云",
+  "等到月影斑驳",
+  "窗透初晓 日照西桥 云自摇",
+  "夕阳如血 彼岸花来得妖艳",
+  "江畔暮雨纷纷 夕阳西沉",
+  "落款未签 日出之后变脸",
+  "阳光穿透 金粉洒在圆桌",
+  "一起踏过烈日风暴与寒野静谧",
+  "光芒唤醒的人 沐浴朝阳心已驰骋",
+  "那时的天很蓝 阳光耀眼睛",
+  "我寻你千百度 日出到迟暮",
+  "阳光暖暖的 时光慢慢的",
+  "徘徊在海岸线 日出会在几点",
+  "看落日金芒缓缓登场",
+  "霓虹交织着斜阳 鲜花慢动作绽放",
+  "隐隐约约 乌云想遮天",
+  "当乌云不断堆叠",
+  "抬起头 数乌云",
+  "一瓢江湖我沉浮",
+  "染指江湖结悲局",
+  "纸泻轻狂 浓墨飞扬",
+  "满纸荒唐中窥见满脸沧桑",
+  "纸扇藏伏笔 玄机诗文里",
+  "洛阳纸贵 我该不该得意",
+  "洛阳纸贵 这传说已冷清",
+  "还是会诉尽衷肠",
+  "太多的伤 难诉衷肠",
+  "不止为功名之资",
+  "功名桥 世俗道",
+  "隐居山水之间誓与浮名散",
+  "有什么值得烦恼",
+  "小烦恼 没什么大不了",
+  "没告诉他将被千古传诵",
+  "若流芳千古 爱的人却反目",
+  "若怡笑千古 因为爱得执迷又糊涂",
+  "只留一盏灯 光影似流沙昏黄",
+  "花灯随烟波铺江上",
+  "如今灯下闲读红袖添香",
+  "可你从不在灯火阑珊处",
+  "灯火竹帘 梦里随风摇曳",
+  "万家灯火 看得太多",
+  "梧桐树荫了整条街 灯火穿透了她的叶",
+  "灯火通明里散落着有缘的年轻人",
+  "断桥是否下过雪",
+  "断桥残雪沉默了语言",
+  "天空又飘起小雪",
+  "青丝蘸白雪 来路生云烟",
+  "苔上雪告诉我 你没归来过",
+  "雪落掌心里面",
+  "三四更雪 风不减 吹袭一夜",
+  "后来有人看见他冒雪背着行囊暗夜离开",
+  "你突然说想看大雪",
+  "腹化风雪为刀剑",
+  "持续一周的降雪 的降雪",
+  "可能南极下一场雪让人很难留意",
+  "像大雪一样的热烈",
+  "梦里听闻你织风雪",
+  "观你眉眼 封山的雪 满睫",
+  "山海之外 蒲团当空 余温雪中散",
+  "沙发的凹陷里是你的影子",
+  "昨夜做了一个梦 梦里我们回到手牵着手",
+  "当我发现所谓醒来其实是另一个梦",
+  "梦的出口 散不开的浓雾太沉重",
+  "你灰色头像不会再跳动 暖色的梦变冰凉的枷锁",
+  "怅然入梦 梦几月 醒几年",
+  "搞不好曾梦里出现",
+  "梦里披荆斩棘铮铮之铁衣",
+  "偶尔梦中还窜到嘴边",
+  "隔壁那所废弃的找小学校 时常出现在我的梦里摇晃",
+  "像是一夜残缺的梦 遗失十几年的美向我投案自首",
+  "待到酒清醒 她无影 原来是梦里",
+  "老古董 一如我在八零年代出土的梦",
+  "树叶静静随风掉落 梦里不知何处花火",
+  "红尘旧梦 梦断都成空",
+  "昨夜的梦里 你面目难辨得无稽",
+  "拍拍手晚上睡觉就能梦游",
+  "无所谓 自由有在的飞 让梦纯粹 静候轮回",
+  "梦里一记钟声 恍然敲回古时",
+  "借一场古典的梦 与东坡热情相拥",
+  "却不见方才梦中人",
+  "做过的梦 就一一去实现了吧",
+  "多久未见你 可谓梦沉书远矣",
+  "雨水拍打我魂牵梦绕的凉亭和十八岁那年",
+  "梦醒默念你已久远",
+  "去梦里掐自己 皮下绽放青紫礼炮",
+  "命数似梦易解",
+  "在那不遥远的地方 埋着你的梦想",
+  "看过了太多太多风景",
+  "看不见的风景",
+  "江山如画又怎能比拟 你送我的风景",
+  "你的脾气那么温驯如湖畔的风景",
+  "想必你也看过了一些风景",
+  "我推开窗 满手回忆沙沙作响",
+  "车窗外面 泥土沁香沁入心田",
+  "落地窗外的夜色引人想入非非",
+  "落地窗上好像已经蒙上厚厚的雾气",
+  "窗外夜风裹走时间",
+  "蓝色玻璃窗反射WinXP的桌面/推开窗 亲爱的人呐探出脑袋沉浸烟火味",
+  "你脑子聪明 但躲不了世俗的雨",
+  "想开点 是我送你的雨衣",
+  "红雨瓢泼泛起了回忆怎么潜",
+  "一片小雨滴 陪着我等天明",
+  "只有与你相伴 晴和雨才会饱满",
+  "我的脾气那么隐秘如黑夜的骤雨",
+  "雨掸霜叶 掸落一地过往",
+  "望湖畔 雨漫 烟横",
+  "忽而疾风穿堂 掀帘幔",
+  "寒风斜雨中你摇摆",
+  "相似的风雨后",
+  "风在淅淅沥沥的雨中",
+  "血腥的风放肆嘲笑 漫天的黄叶",
+  "翻手为云覆手为雨 金盆洗手止风雨",
+  "你歌声犹绕耳 清风在侧 琴案已蒙尘",
+  "江南烟雨却痴缠 花飞雨追一如尘缘理还乱",
+  "落花雨 你飘摇的美丽",
+  "你已成风 幻化的雨下错了季候",
+  "风雷惊动巴普洛夫的狗",
+  "在海上倾盆大雨里",
+  "今夕是何夕 晚风过花庭",
+  "敬属江上雨 寒舟里 我独饮",
+  "你在北方某城 很偶尔下雨",
+  "刚下过雨的天空 出现双道彩虹",
+  "城外马歇摇首顿蹄 鹏举瞰冷雨",
+  "已乘昨夜长风随波东流去",
+  "于夜阑酒醒时分惊起听雨声",
+  "阴天 下着毛毛雨",
+  "但别在那暴雨时刻",
+  "雨打湿了眼眶 年年倚井盼归堂",
+  "远方有琴 愀然空灵 声声催天雨",
+  "初夏的雨点 落得太敷衍",
+  "一路上有我风雨相随",
+  "星光点亮了 海水泛起皱褶",
+  "晚风咸咸的 吹散你我身旁余热",
+  "我的思念啦啦啦啦乘着风漂流",
+  "天空好想下雨 我好想住你隔壁",
+  "当乌云不断堆叠 暴雨也就如期而至",
+  "我乐意守在你左右 为你挡雨遮风",
+  "像沙漠连夜大雨 规则缺席",
+  "你若化成风 我幻化成雨",
+  "表面平静其实内心早已风起云涌",
+  "我劝告了风 晚点送它走",
+  "留香时间拉长在风起雨过之后",
+  "就在风浪里追寻你踪迹",
+  "雨下在不见底的海域",
+  "雨下在蔚蓝色的海域",
+  "子落楸坪 雨落鸳鸯瓦",
+  "暗淡的下雨天 凉亭里飘散着落叶",
+  "我们十八岁的凉亭 浪漫的邂逅 还是那个雨后",
+  "纸钱晚风送 谁家又添新痛",
+  "新雨煎茶 松枝添火 一缕山顶烟",
+  "风起 恰好送碎花满肩",
+  "他们爆裂在风里 多行不义自毙/走在下了千万年的雨里",
+  "会不会在远方刮起风",
+  "骤雨疾风吹不散我一念执着",
+  "揽一缕仙风拂去当年狂",
+  "你这坏孩子 不要不说话",
+  "孩子说如果爱就请深深爱",
+  "小孩子都在岸边的小林子里捉知了",
+  "你从来不爱打雨伞",
+  "撑伞走过那路口",
+  "做不得旷世的逸才 只做你天地间的伞",
+  "你掏出伞 垂直撑着",
+  "湖畔青石板上 一把油纸伞",
+  "林间伞下 你与我执手信步伞下",
+  "我想陪着你 靠在沙滩撑伞的躺椅",
+  "绝世的画 缺了角就会掉价",
+  "江山如画又怎能比拟",
+  "明明也努力学习书画琴棋",
+  "喜欢我的白色衬衫",
+  "谁的耳边 总有绝句在萦绕",
+  "而你却消失在蒙面执行任务杀气腾腾的夜",
+  "午夜十分 你倚在旧沙发床",
+  "你乘月色西飞 噢 夜幕低垂",
+  "在某个夜里 卸下伪装的你 是不是也会哭泣",
+  "冬深春浅时节 岛畔福船入港寒夜",
+  "我懂了老歌扣人心弦 因为来自你的长夜",
+  "深夜里我登陆原始雨林",
+  "夜色多温柔 你有多爱我",
+  "司空见惯了鲜血",
+  "堆叠 魅惑血红的感觉",
+  "飞鸽来急 那落款沾染血迹",
+  "热血 风干在旧痕里",
+  "夕阳如血 彼岸花开得妖艳",
+  "恩宠难回 流过血的人都无所谓",
+  "只为了完成一个夙愿 还将付出几多鲜血",
+  "半城烟沙 血泪落下",
+  "肺腑之言随机发表 那是恢复气血的信号",
+  "他们躁动的起舞 像冷血的蛇皮",
+  "能嗅到发作前的血腥",
+  "你忘记你本是娇娆的红颜",
+  "守护你身边  一笑为红颜",
+  "孤雁飞去 红颜来相许",
+  "我走在街上 闷着头游荡 把心事流放",
+  "柳絮抚着那条街",
+  "是爱的光 照进闹热的街巷",
+  "想象之中雨过一道彩虹",
+  "枕簟凉 残烛晃 人惆怅",
+  "天干物燥 小心火烛",
+  "津渡烛影深深 是我在等",
+  "借我一盏烛火 点亮你的轮廓",
+  "爱是一盏烛火 明灭会有因果",
+  "一缕青丝一生珍藏",
+  "白发苍苍 纸泻轻狂 浓墨飞扬 阵亡",
+  "一将成 万骨枯 多少白发送走黑发",
+  "不恋红尘却难舍回忆 每一段都有你",
+  "把酒言欢 你斟酌我举杯 和陌陌红尘共醉",
+  "朋友说 尘世被你夸那么美",
+  "月影憧憧 烟火几重 烛花儿红 红尘旧梦梦断都成空",
+  "弹指一挥间 红尘已缈远",
+  "恍然发觉琴案已蒙尘",
+  "林中抚琴曲委婉",
+  "柳下闻瑶琴 起舞和一曲",
+  "细腻的心思像紧绷的琴弦",
+  "已经好几年不沾一滴酒",
+  "推杯又换盏",
+  "今朝茶凉酒寒",
+  "把酒言欢 你斟酌我举杯",
+  "有些人一吃饭就很喜欢敬酒",
+  "三杯酒下肚就能够唤你朋友",
+  "想让我喝酒要问真心够不够",
+  "敬酒不吃吃罚酒的爽",
+  "敬酒不吃吃什么酒",
+  "不如举杯跨过摇摆之门",
+  "你莞尔沏来春涧草茶",
+  "一壶清酒 江水悠悠 我心悠悠",
+  "只盼归田卸甲 还能捧回你沏的茶",
+  "今朝有酒醉 醉庆同袍沙场归",
+  "也像在深海里开启了香槟",
+  "新雨煎茶 松枝添火",
+  "不愿闻其详 愿闻点茶香",
+  "任涓滴往事佐酒心里淌",
+  "我愿意 化浮萍躺湖心",
+  "回忆陪我躲在角落没露面",
+  "我和回忆缩在角落没露面",
+  "完美的冰柜 冻裂了回忆稀碎",
+  "想起那一段的回忆 至少我还能拥有回忆",
+  "如果扼守回忆是生命的意义",
+  "我想你绝不会回忆关于我的所有话题",
+  "我带你回忆曾经快乐的时空",
+  "你带我回忆爱里互相的折磨",
+  "今天这里的主题 我把它叫做回忆",
+  "玫瑰花的葬礼 埋葬关于你的回忆",
+  "让我一个人回忆承诺",
+  "拍岸的回忆 捎来紫色珊瑚的问句",
+  "回忆任它残破 可能终会参破",
+  "旧楹联红褪墨残谁来揭",
+  "在和你灵魂谋面之前",
+  "嗯 指向你干净的灵魂",
+  "我愿意 化流沙躺湖底",
+  "梦的出口散不开的浓雾太沉重",
+  "蒙蒙雾气里跃上甲板",
+  "转世燕还故榻 为你衔来二月的花",
+  "旅人停步折花 淋湿了绸缎",
+  "哪里会有小桥流水 哗啦啦的洗去尘灰 漂浮桃花蕊",
+  "有桃花 有桃花 谁是谁的桃花",
+  "月影憧憧 烟火几重 烛花红",
+  "又是清明雨上 折菊寄到你身旁",
+  "除刺的玫瑰 安全又唯美",
+  "装糊涂 雾里看花也不失为一种幸福",
+  "不再抬头 因为乱花渐迷人眼",
+  "夏花瘦都不拉手 随便遛遛无名小狗",
+  "没有人愿意提起 玫瑰花它的过去",
+  "玫瑰花的葬礼 埋葬深深爱着的你",
+  "崩塌的瞬间 我还攥着新鲜玫瑰",
+  "你坐镇笑魇如桃花",
+  "花明柳媚春日 书院里又添学子",
+  "却留下了一地曼陀花瓣",
+  "花开后花又落 轮回也没结果",
+  "眼泪不是成熟的代价 而是雨露之于鲜花",
+  "那年我们像怀揣希望的花蕾",
+  "花开不败 香满楼台",
+  "等到月影斑驳 等到满城花落",
+  "像沙漠连夜大雨",
+  "别做一条爱上沙漠的鱼",
+  "我的黑框眼镜在assad湖边走火",
+  "海中央我们的船开始晃悠",
+  "露水凉 老船晃 人惆怅",
+  "敬嘱江上雨 寒舟里我独饮",
+  "周末找个借口和你泛舟",
+  "而我们停船靠岸 已通关",
+  "乌篷里传来了一曲离殇",
+  "乘一叶扁舟 入景随风 望江畔渔火",
+  "就像一部电影原谅惨白的票房",
+  "电影院里 你的背影 还是那么纯情",
+  "爱情的电影 一人出局就不行",
+  "散场电影 全世界伤心",
+  "这样生动 谁还看电影",
+  "我走进电影院看一部冷门的戏 厅里只有我前排一对情侣",
+  "倒也不是 不是电影恐怖",
+  "我也喜欢上马路乱踩 看完电影去找招牌菜",
+  "把电视打开 嘉宾和节目全在瞎侃",
+  "把电视打开 嘉宾和节目还在瞎侃",
+  "渡口边最后一面洒下了句点",
+  "哪里会有小桥流水",
+  "功名桥 世俗道 年少难免走一遭",
+  "拱桥断心也乱 时间不断回收",
+  "你掏出手机拍个不休",
+  "南来北往的人 举手机驻足",
+  "他侧过身 等她走远 暗暗摸出手机",
+  "她终于掏出了手机 信号连通在人海里",
+  "关掉电话 卸下行囊",
+  "可是手机空间已经被你占满",
+  "短信快存满 假意or真情自知冷暖",
+  "我为你戴上了戒指",
+  "为你解冻冰河 为你作一只扑火的飞蛾",
+  "清澈的小河弯弯绕绕",
+  "我真的不想不想小河变成大楼",
+  "缄默的泪 汇成这方土地的湖",
+  "面朝大海 我站成了大海",
+  "沿海岸奔跑 寻找属于我们的岛",
+  "我的黑框眼镜在Assad湖边走火",
+  "去洞庭湖底吃晚餐",
+  "湖面穿行的谬赞和妄断",
+  "沧海成荒野 真情永不灭",
+  "像穿越海啸的人鱼",
+  "沿河而下搜救着你",
+  "灯火穿透了她的叶",
+  "站在故事的最角落 享受梧桐叶诱惑",
+  "几片来自松岛的枫叶",
+  "七月把空调开爆低温度",
+  "她让我感到空调都不冷了",
+  "珍宝珠棒棒糖 你轻轻递到她的手上",
+  "甜甜的笑容像嘴边棒棒糖",
+  "我渐渐丢失全部的线索所有的证据",
+  "指纹比对 没有线索能再追",
+  "最怕不觉泪已拆两行",
+  "缄默的泪 没有人在乎",
+  "后来的我们在眼泪里终于懂得",
+  "我抗住了眼泪 也不去埋怨谁",
+  "爱情里流过的眼泪 让时间慢慢去烘焙",
+  "泪水在草地上和露水吻着",
+  "你要清醒别再轻易掉眼泪",
+  "只有与你相伴 笑和泪才会饱满",
+  "又为何眼里闪回当时的泪影",
+  "眼泪不争气 痛洒心底",
+  "我的泪落在你的手心 瞬间结成一块冰",
+  "没有眼泪要擦 就别揉眼啦",
+  "燕尾秋你皱眉头 咖啡不苦就喝一口",
+  "地球每天都在转 念头每天都在换",
+  "原谅这时代的肤浅",
+  "如果时光倒流 我们又能抓得住什么",
+  "随着时光推移全部都抛弃",
+  "承蒙时光洗礼 往事已云淡风轻",
+  "时光颠簸 心路苍茫",
+  "琅琅书声如春风 拂过千年时空",
+  "相爱的时候总笑谈 爱情多简单",
+  "怎么办爱情甜又酸",
+  "爱情渐远着 泪水在草地上和露水吻着",
+  "我知道爱情这东西 它没什么道理",
+  "遇见了你又失去了你 爱情像流星",
+  "爱情这东西 公平不公平",
+  "爱情 就像一出戏",
+  "找什么字眼形容爱情的火焰",
+  "我在人间彷徨 寻不到你的天堂",
+  "真的好美丽 那天的烟花雨",
+  "关外野店 烟火绝 客怎眠",
+  "丛林放一把火 要抵御夜寒",
+  "信念就像受潮火种",
+  "兽皮不要掀开 你说能孵蛋",
+  "先有鸡还是先有蛋",
+  "儿时凿壁偷了谁家的光",
+  "左思根本没法和我儿时相比",
+  "去老地方吧再碰一面",
+  "我们相约老地方",
+  "一个曾经最熟悉的号码闪烁着",
+  "一个陌生很陌生的号码闪烁着",
+  "温存迷醉吵闹清醒 都还在我的脚畔兜转不清",
+  "如果有天兜兜转转再一次相遇",
+  "啦咪咪咪悠扬吗 你听到了我童年那只竹笛",
+  "衙门说按一平米八吊钱来跟他折算",
+  "相关衙门提出了一些指导性意见",
+  "早睡身体好 有什么值得烦恼",
+  "有时有小脾气 有时有小烦恼",
+  "你说今年秋天想去趟南极",
+  "我在南极拍下了企鹅与冰川的剪影",
+  "我在南极经受了孤单与严寒的洗礼",
+  "每颗音符里都有幸福闪动",
+  "幸福的定义连番升级 拒绝回到初始版本",
+  "雾里看花也不失为一种幸福",
+  "错过了幸福 谁又为我在乎",
+  "翻着你朋友圈的幸福合影 由衷的为你高兴",
+  "藏不住眼里的光 幸福简单又无畏",
+  "孤单喂饱了理性",
+  "写不来十八九岁煽情字句",
+  "如果见你 场面会煽情",
+  "也嚼透了一些道理",
+  "才相信 许多事没有道理",
+  "星座书上 说我们不合",
+  "朋友来电约我去逛逛书店",
+  "推开店门我看见一座不夜书城",
+  "她轻咬嘴唇 读书那么投入",
+  "有没有CD 书店二层有卖CD",
+  "你今夜买的每本书 我也都得买回家看",
+  "把书装进包里 向门外快步走去",
+  "有时间还要再来多买多买一些书籍",
+  "书中搞不好没有黄金屋 千钟粟 颜如玉",
+  "可书店 有你啊",
+  "书到用时才恨少 还真那么回事",
+  "去年的家书两行 读来又热了眼眶",
+  "我的书上你的正楷眉清目秀",
+  "谁书列豪杰 功过有几许",
+  "生活像一盘草莓有烂有甜",
+  "时间的步伐 催促我跟上",
+  "在时间长河里散佚",
+  "沙发的凹陷里是你的影子不停地起跳",
+  "广场音响兀自播放某个排行榜",
+  "你的鸽子去广场不为炫耀羽毛",
+  "天色已微亮 清冷的广场",
+  "石阶露重苔滑 步履轻缓",
+  "谈轮回 无人解",
+  "造物的安排神秘无形",
+  "饱览吧造物者良苦的用心",
+  "努力留下的存在过的一切证据",
+  "你的存在是一个奇迹",
+  "粗糙历史一段 座次怎么摆",
+  "我们一起变粗糙",
+  "往事凄艳 用情浅 两手缘",
+  "饮一盏岁月留香 唱一曲往事飞扬",
+  "十年之间伏案著述苦心孤诣",
+  "故人题词十年前",
+  "十年的情要慢慢还",
+  "宿昔不梳 一苦十年寒窗",
+  "当恩怨各一半 我怎么圈揽",
+  "恩怨都似飞鸿踏雪泥",
+  "永远做彼此的baby",
+  "Baby我们说好",
+  "我的小baby baby baby baby",
+  "宝贝 我的宝贝 我的宝贝 我的宝贝",
+];
+
+/* =========================================================
+   渲染
+   ========================================================= */
+const $ = (s)=>document.querySelector(s);
+
+/* 官方入口 */
+$("#linksGrid").innerHTML = OFFICIAL_LINKS.map(l=>`
+  <a class="text-card" href="${l.url}" target="_blank" rel="noopener">
+    <div class="t">${l.name}</div>
+    <div class="d">${l.desc}</div>
+  </a>`).join("");
+
+/* 解析许嵩 */
+$("#analysisGrid").innerHTML = ANALYSIS_LINKS.map(l=>`
+  <a class="text-card" href="${l.url}" target="_blank" rel="noopener">
+    <div class="t">${l.name}</div>
+    <div class="d">${l.desc}</div>
+  </a>`).join("");
+
+/* 轻松一下 */
+$("#relaxGrid").innerHTML = RELAX_LINKS.map(l=>`
+  <a class="text-card" href="${l.url}" target="_blank" rel="noopener">
+    <div class="t">${l.name}</div>
+    <div class="d">${l.desc}</div>
+  </a>`).join("");
+
+/* 专辑时间线 · 交替上下排列 */
+const topAlbs = ALBUMS.filter((_,i)=>i%2===0);   // 0,2,4,6,8 → 上方5张
+const bottomAlbs = ALBUMS.filter((_,i)=>i%2===1); // 1,3,5,7   → 下方4张
+
+function tlTopCol(i){return (i*2)+1;}   // 第i个上方专辑占第 1,3,5,7,9 列
+function tlBottomCol(i){return (i*2)+2;} // 第i个下方专辑占第 2,4,6,8 列
+
+function renderTopItem(a,i,absIdx){
+  const col = tlTopCol(i);
+  return `
+    <div class="tl-item" style="grid-column:${col}">
+      <div class="alb-card" data-i="${absIdx}">
+        <div class="yr">${a.yr}</div>
+        <div class="nm">${a.name}</div>
+      </div>
+      <div class="connector"></div>
+    </div>`;
+}
+
+function renderBottomItem(a,i,absIdx){
+  const col = tlBottomCol(i);
+  return `
+    <div class="tl-item" style="grid-column:${col}">
+      <div class="connector"></div>
+      <div class="alb-card" data-i="${absIdx}">
+        <div class="nm">${a.name}</div>
+        <div class="yr">${a.yr}</div>
+      </div>
+    </div>`;
+}
+
+$("#tlTop").innerHTML = topAlbs.map((a,i)=>renderTopItem(a,i,i*2)).join("");
+$("#tlBottom").innerHTML = bottomAlbs.map((a,i)=>renderBottomItem(a,i,i*2+1)).join("");
+
+/* 9 个圆点 */
+$("#tlDots").innerHTML = Array.from({length:9},()=>"<span></span>").join("");
+
+/* =========================================================
+   交互
+   ========================================================= */
+
+/* 专辑弹层 */
+const modal = $("#albumModal");
+function openModal(i){
+  const a = ALBUMS[i];
+  $("#mYr").textContent = a.yr;
+  $("#mName").textContent = a.name;
+  $("#mDesc").textContent = a.desc;
+  modal.classList.add("on");
+}
+document.addEventListener("click",e=>{
+  const card = e.target.closest(".alb-card");
+  if(card) openModal(+card.dataset.i);
+});
+$("#modalClose").addEventListener("click",()=>modal.classList.remove("on"));
+$("#modalMask").addEventListener("click",()=>modal.classList.remove("on"));
+document.addEventListener("keydown",e=>{ if(e.key==="Escape") modal.classList.remove("on"); });
+
+/* 不蒜子统计兜底：脚本加载失败时显示默认值 */
+window.addEventListener("load",()=>{
+  const pvEl = document.getElementById("busuanzi_value_site_pv");
+  const uvEl = document.getElementById("busuanzi_value_site_uv");
+  if(pvEl && !pvEl.textContent) pvEl.textContent = "--";
+  if(uvEl && !uvEl.textContent) uvEl.textContent = "--";
+});
+
+/* 随机大标题歌词 */
+function getRandomLyric(){
+  const total = LYRICS.length;
+  let used = [];
+  try{
+    const raw = localStorage.getItem("lyric_used");
+    if(raw) used = JSON.parse(raw);
+  }catch(e){ used = []; }
+  if(used.length >= total){
+    used = [];
+  }
+  let idx;
+  const available = [];
+  for(let i=0;i<total;i++){
+    if(!used.includes(i)) available.push(i);
+  }
+  idx = available[Math.floor(Math.random()*available.length)];
+  used.push(idx);
+  try{
+    localStorage.setItem("lyric_used", JSON.stringify(used));
+  }catch(e){}
+  return LYRICS[idx];
+}
+$("#pageTitle").textContent = getRandomLyric();
+
+/* 兜底：确保浏览器标题正确 */
+document.title = "山水之间-嵩鼠导航站";
+
+/* 工具栏 · 搜索框展开/收起 */
+const searchInline = $("#searchInline");
+const toolSearch = $("#toolSearch");
+toolSearch.addEventListener("click",()=>{
+  searchInline.classList.toggle("open");
+  if(searchInline.classList.contains("open")){
+    $("#searchInput").focus();
+  }
+});
+
+/* 搜索功能 */
+function doSearch(){
+  const q = $("#searchInput").value.trim().toLowerCase();
+  if(!q) return;
+  let results = [];
+  OFFICIAL_LINKS.forEach(l=>{
+    if(l.name.toLowerCase().includes(q) || l.desc.toLowerCase().includes(q)){
+      results.push({type:"官方", title:l.name, url:l.url});
+    }
+  });
+  ANALYSIS_LINKS.forEach(l=>{
+    if(l.name.toLowerCase().includes(q) || l.desc.toLowerCase().includes(q)){
+      results.push({type:"解析", title:l.name, url:l.url});
+    }
+  });
+  RELAX_LINKS.forEach(l=>{
+    if(l.name.toLowerCase().includes(q) || l.desc.toLowerCase().includes(q)){
+      results.push({type:"轻松", title:l.name, url:l.url});
+    }
+  });
+  ALBUMS.forEach((a,i)=>{
+    if(a.name.includes(q) || a.desc.includes(q) || a.yr.includes(q)){
+      results.push({type:"专辑", title:a.yr+" · "+a.name, action:"album", index:i});
+    }
+  });
+  LYRICS.forEach(l=>{
+    if(l.includes(q)){
+      results.push({type:"歌词", title:l});
+    }
+  });
+  if(results.length===0){
+    alert("未找到相关内容");
+    return;
+  }
+  const first = results[0];
+  if(first.url){
+    window.open(first.url, "_blank");
+  } else if(first.action==="album"){
+    openModal(first.index);
+    document.getElementById("albums").scrollIntoView({behavior:"smooth"});
+  } else {
+    alert("找到 "+results.length+" 条结果：\n"+results.slice(0,5).map(r=>"["+r.type+"] "+r.title).join("\n"));
+  }
+}
+$("#searchBtn").addEventListener("click",doSearch);
+$("#searchInput").addEventListener("keydown",e=>{ if(e.key==="Enter") doSearch(); });
+</script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</body>
+</html>
