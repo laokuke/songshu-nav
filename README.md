@@ -2,7 +2,7 @@
 
 > 一个专属于许嵩歌迷的音乐导航站，汇聚了关于许嵩及其歌曲的有趣实用链接。
 
-**👉 [点击访问许嵩都写过唱过哪些歌？](https://laokuke.github.io/songshu-nav/)**
+**👉 [点击访问 许嵩都写过唱过哪些歌？](https://laokuke.github.io/songshu-nav/)**
 
 ## 署名
 
