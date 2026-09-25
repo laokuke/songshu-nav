@@ -4,6 +4,8 @@
 
 **👉 [点击访问 嵩鼠导航站](https://laokuke.github.io/songshu-nav/)**
 
+![导航站截图](thumbnail.png)
+
 ## 署名
 
 整理：B站UP主 [@我贼6贼6贼6](https://space.bilibili.com/12550061)
