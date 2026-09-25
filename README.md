@@ -12,6 +12,6 @@
 交流Q群：730818497
 
 ## 我的其它项目
-[嵩词百科](https://github.com/laokuke/vae-lyrical)
+[嵩词百科](https://github.com/laokuke/vae-lyrical)-许嵩歌词意象资料库
 
-[许嵩都写过唱过哪些歌？](https://github.com/laokuke/Vae-Song-Titles)
+[许嵩都写过唱过哪些歌？](https://github.com/laokuke/Vae-Song-Titles)-能看到许嵩创作的几乎所有歌曲名
